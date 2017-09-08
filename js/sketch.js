@@ -19,13 +19,13 @@ function setup() {
         radius: 0.3 * width,
         radius_range: [0, max(width, height)],
         originOffsetX: 0.4,
-        originOffsetX_range: [-1, 1],
+        originOffsetX_range: [-1, 2],
         originOffsetY: -0.1,
-        originOffsetY_range: [-1, 1],
+        originOffsetY_range: [-1, 2],
         circleOffsetX: 1,
-        circleOffsetX_range: [-1, 1],
+        circleOffsetX_range: [-1, 2],
         circleOffsetY: 1,
-        circleOffsetY_range: [-1, 1],
+        circleOffsetY_range: [-1, 2],
 
     };
     controlKit = new ControlKit();
