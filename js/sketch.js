@@ -8,6 +8,10 @@ function setup() {
     stroke(255);
 
     rays_params = {
+        nRaysDrawn: 12,
+        nRaysDrawn_range: [0,12],
+        nRaysTotal: 24,
+        nRaysTotal_range: [0,24],
         originX: 0.5 * width,
         originX_range: [0, width],
         originY: 0.8 * height,
@@ -30,25 +34,28 @@ function setup() {
             label: "Rays Parameters",
         })
         .addGroup()
-            .addSlider(rays_params, 'originX',      'originX_range')
-            .addSlider(rays_params, 'originY',      'originY_range')
-            .addSlider(rays_params, 'radius',       'radius_range')
-            .addSlider(rays_params, 'originOffsetX',  'originOffsetX_range')
-            .addSlider(rays_params, 'originOffsetY',  'originOffsetY_range')
-            .addSlider(rays_params, 'circleOffsetX',  'circleOffsetX_range')
-            .addSlider(rays_params, 'circleOffsetY',  'circleOffsetY_range')
+            .addSlider(rays_params, 'nRaysDrawn',    'nRaysDrawn_range')
+            .addRange(rays_params,  'nRaysDrawn_range', {label:'nRaysDrawn_range'})
+            .addSlider(rays_params, 'nRaysTotal',    'nRaysTotal_range')
+            .addSlider(rays_params, 'originX',       'originX_range')
+            .addSlider(rays_params, 'originY',       'originY_range')
+            .addSlider(rays_params, 'radius',        'radius_range')
+            .addSlider(rays_params, 'originOffsetX', 'originOffsetX_range')
+            .addSlider(rays_params, 'originOffsetY', 'originOffsetY_range')
+            .addSlider(rays_params, 'circleOffsetX', 'circleOffsetX_range')
+            .addSlider(rays_params, 'circleOffsetY', 'circleOffsetY_range')
 }
 
 function draw() {
     background(0);
 
-    _.range(12)
+    _.range(rays_params.nRaysDrawn)
         .map(function(index) {
             return getPosOnCircle(
                 createVector(rays_params.originX, rays_params.originY), 
                 rays_params.radius, 
-                25/24 * Math.PI, 
-                24, 
+                (rays_params.nRaysTotal + 1)/rays_params.nRaysTotal * Math.PI, 
+                rays_params.nRaysTotal,
                 index
             )
         })
