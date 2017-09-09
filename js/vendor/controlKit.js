@@ -807,7 +807,7 @@ var DEFAULT_FUNCTION_PLOTTER_NON_IMPLICIT_UNIT_X  =  1,
     DEFAULT_FUNCTION_PLOTTER_UNIT_MIN  = 0.15,
     DEFAULT_FUNCTION_PLOTTER_UNIT_MAX  = 4,
     // DEFAULT_FUNCTION_PLOTTER_NON_IMPLICIT_SCALE  = 10.0,
-    DEFAULT_FUNCTION_PLOTTER_NON_IMPLICIT_SCALE  = 4.0,
+    DEFAULT_FUNCTION_PLOTTER_NON_IMPLICIT_SCALE  = 1.4,
     DEFAULT_FUNCTION_PLOTTER_IMPLICIT_SCALE = 1.0,
     DEFAULT_FUNCTION_PLOTTER_SCALE_MIN = 0.02,
     DEFAULT_FUNCTION_PLOTTER_SCALE_MAX = 25,
@@ -926,7 +926,8 @@ function FunctionPlotter(parent, object, value, params) {
 
     this._scaleMinMax = [DEFAULT_FUNCTION_PLOTTER_SCALE_MIN, DEFAULT_FUNCTION_PLOTTER_SCALE_MAX]; //1/50 -> 25
 
-    this._center = [Math.round(size * 0.5),Math.round(size * 0.5)];
+    // this._center = [Math.round(size * 0.5),Math.round(size * 0.5)];
+    this._center = [Math.round(size * 0.15),Math.round(size * 0.85)];
     this._svgPos = [0, 0];
 
     this._func = null;

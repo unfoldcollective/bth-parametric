@@ -28,11 +28,49 @@ function setup() {
         circleOffsetY_range: [-1, 2],
     };
     animation = {
-        function: {
-            easeInQuad: function(time){ return $.easing.easeInQuad(undefined,time,0,1,1); },
-            easeInCubic: function(time){ return $.easing.easeInCubic(undefined,time,0,1,1); },
-        }
+        funcNames: [
+            'swing',
+            'easeInQuad',
+            'easeOutQuad',
+            'easeInOutQuad',
+            'easeInCubic',
+            'easeOutCubic',
+            'easeInOutCubic',
+            'easeInQuart',
+            'easeOutQuart',
+            'easeInOutQuart',
+            'easeInQuint',
+            'easeOutQuint',
+            'easeInOutQuint',
+            'easeInSine',
+            'easeOutSine',
+            'easeInOutSine',
+            'easeInExpo',
+            'easeOutExpo',
+            'easeInOutExpo',
+            'easeInCirc',
+            'easeOutCirc',
+            'easeInOutCirc',
+            'easeInElastic',
+            'easeOutElastic',
+            'easeInOutElastic',
+            'easeInBack',
+            'easeOutBack',
+            'easeInOutBack',
+            'easeInBounce',
+            'easeOutBounce',
+            'easeInOutBounce',
+        ],
+        selectedFuncName: null,
     };
+    animation.selectedFuncName = animation.funcNames[0];
+    animation.funcs = _(animation.funcNames).reduce(
+        (memo, funcName) => {
+            memo[funcName] = function(time){ return $.easing[funcName](null,time,0,1,1)}; 
+            return memo;
+        }, {}
+    )
+
     controlKit = new ControlKit();
     controlKit
         .addPanel({
@@ -54,8 +92,16 @@ function setup() {
             label: "Animation",
         })
         .addGroup()
-            .addFunctionPlotter(animation.function, 'easeInQuad')
-            .addFunctionPlotter(animation.function, 'easeInCubic')
+            .addSelect(animation,'funcNames',{
+                target:'selectedFuncName',
+                onChange: function (funcIndex) {
+                    var funcName = animation.funcNames[funcIndex]
+                    console.log(funcName);
+                    animation.selectedFuncName = funcName;
+                    controlKit.update(); // this doesnt affect functionPlotters :(
+                }
+            })
+            .addFunctionPlotter(animation.funcs, animation.selectedFuncName)
 }
 
 function draw() {
