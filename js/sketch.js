@@ -87,21 +87,21 @@ function setup() {
             .addSlider(rays_params, 'originOffsetY', 'originOffsetY_range')
             .addSlider(rays_params, 'circleOffsetX', 'circleOffsetX_range')
             .addSlider(rays_params, 'circleOffsetY', 'circleOffsetY_range')
-    controlKit
-        .addPanel({
-            label: "Animation",
-        })
-        .addGroup()
-            .addSelect(animation,'funcNames',{
-                target:'selectedFuncName',
-                onChange: function (funcIndex) {
-                    var funcName = animation.funcNames[funcIndex]
-                    console.log(funcName);
-                    animation.selectedFuncName = funcName;
-                    controlKit.update(); // this doesnt affect functionPlotters :(
-                }
-            })
-            .addFunctionPlotter(animation.funcs, animation.selectedFuncName)
+    // controlKit
+    //     .addPanel({
+    //         label: "Animation",
+    //     })
+    //     .addGroup()
+    //         .addSelect(animation,'funcNames',{
+    //             target:'selectedFuncName',
+    //             onChange: function (funcIndex) {
+    //                 var funcName = animation.funcNames[funcIndex]
+    //                 console.log(funcName);
+    //                 animation.selectedFuncName = funcName;
+    //                 controlKit.update(); // this doesnt affect functionPlotters :(
+    //             }
+    //         })
+    //         .addFunctionPlotter(animation.funcs, animation.selectedFuncName)
 }
 
 function draw() {
