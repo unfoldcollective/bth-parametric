@@ -12,7 +12,7 @@ function setup() {
         nRaysDrawn_range: [0,12],
         nRaysTotal: 24,
         nRaysTotal_range: [0,24],
-        originX: 0.5 * width,
+        originX: 0.35 * width,
         originX_range: [0, width],
         originY: 0.8 * height,
         originY_range: [0, height],
@@ -26,7 +26,12 @@ function setup() {
         circleOffsetX_range: [-1, 2],
         circleOffsetY: 1,
         circleOffsetY_range: [-1, 2],
-
+    };
+    animation = {
+        function: {
+            easeInQuad: function(time){ return $.easing.easeInQuad(undefined,time,0,1,1); },
+            easeInCubic: function(time){ return $.easing.easeInCubic(undefined,time,0,1,1); },
+        }
     };
     controlKit = new ControlKit();
     controlKit
@@ -44,6 +49,13 @@ function setup() {
             .addSlider(rays_params, 'originOffsetY', 'originOffsetY_range')
             .addSlider(rays_params, 'circleOffsetX', 'circleOffsetX_range')
             .addSlider(rays_params, 'circleOffsetY', 'circleOffsetY_range')
+    controlKit
+        .addPanel({
+            label: "Animation",
+        })
+        .addGroup()
+            .addFunctionPlotter(animation.function, 'easeInQuad')
+            .addFunctionPlotter(animation.function, 'easeInCubic')
 }
 
 function draw() {
