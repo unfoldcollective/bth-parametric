@@ -1,7 +1,3 @@
-var midPos;
-var radius = 150;
-var offsetX = 20;
-
 var rays_params;
 
 function setup() {
@@ -80,7 +76,6 @@ function getPosOnCircle(midPosition, radius, rotation, n, index) {
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
-    midPos = createVector(width/2, height/2);
 }
 
 function keyTyped() {
