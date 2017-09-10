@@ -1,4 +1,5 @@
 var rays_params;
+var animation_params;
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -27,7 +28,7 @@ function setup() {
         circleOffsetY: 1,
         circleOffsetY_range: [-1, 2],
     };
-    animation = {
+    animation_params = {
         funcNames: [
             'swing',
             'easeInQuad',
@@ -62,9 +63,10 @@ function setup() {
             'easeInOutBounce',
         ],
         selectedFuncName: null,
+        opacity: 0,
     };
-    animation.selectedFuncName = animation.funcNames[0];
-    animation.funcs = _(animation.funcNames).reduce(
+    animation_params.selectedFuncName = animation_params.funcNames[0];
+    animation_params.funcs = _(animation_params.funcNames).reduce(
         (memo, funcName) => {
             memo[funcName] = function(time){ return $.easing[funcName](null,time,0,1,1)}; 
             return memo;
@@ -92,16 +94,18 @@ function setup() {
     //         label: "Animation",
     //     })
     //     .addGroup()
-    //         .addSelect(animation,'funcNames',{
+    //         .addSelect(animation_params,'funcNames',{
     //             target:'selectedFuncName',
     //             onChange: function (funcIndex) {
-    //                 var funcName = animation.funcNames[funcIndex]
+    //                 var funcName = animation_params.funcNames[funcIndex]
     //                 console.log(funcName);
-    //                 animation.selectedFuncName = funcName;
+    //                 animation_params.selectedFuncName = funcName;
     //                 controlKit.update(); // this doesnt affect functionPlotters :(
     //             }
     //         })
-    //         .addFunctionPlotter(animation.funcs, animation.selectedFuncName)
+    //         .addFunctionPlotter(animation_params.funcs, animation_params.selectedFuncName)
+
+    animate();    
 }
 
 function draw() {
@@ -118,15 +122,31 @@ function draw() {
             )
         })
         .map(function(circlePos, index) {
+            stroke(animation_params.opacity);
             line(
                 lerp(rays_params.originX, circlePos.x, rays_params.originOffsetX), 
                 lerp(rays_params.originY, circlePos.y, rays_params.originOffsetY),
                 lerp(rays_params.originX, circlePos.x, rays_params.circleOffsetX), 
                 lerp(rays_params.originY, circlePos.y, rays_params.circleOffsetY), 
             );
-            return circlePos;
         });
+}
 
+function animate() {
+    fade(animation_params, 5, 0, animate);
+}
+
+// function fade (obj, duration, delay, onComplete) {
+function fade (obj, duration, delay, onComplete) {
+    TweenMax.to(obj, 0.5 * duration, {
+        opacity:255,
+        delay:delay,
+    });
+    TweenMax.to(obj, 0.5 * duration, {
+        delay:delay + 0.5 * duration,
+        opacity:0,
+        onComplete: onComplete,
+    });
 }
 
 function getPosOnCircle(midPosition, radius, rotation, n, index) {
