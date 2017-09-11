@@ -29,49 +29,20 @@ function setup() {
         circleOffsetY_range: [-1, 2],
     };
     animation_params = {
-        funcNames: [
-            'swing',
-            'easeInQuad',
-            'easeOutQuad',
-            'easeInOutQuad',
-            'easeInCubic',
-            'easeOutCubic',
-            'easeInOutCubic',
-            'easeInQuart',
-            'easeOutQuart',
-            'easeInOutQuart',
-            'easeInQuint',
-            'easeOutQuint',
-            'easeInOutQuint',
-            'easeInSine',
-            'easeOutSine',
-            'easeInOutSine',
-            'easeInExpo',
-            'easeOutExpo',
-            'easeInOutExpo',
-            'easeInCirc',
-            'easeOutCirc',
-            'easeInOutCirc',
-            'easeInElastic',
-            'easeOutElastic',
-            'easeInOutElastic',
-            'easeInBack',
-            'easeOutBack',
-            'easeInOutBack',
-            'easeInBounce',
-            'easeOutBounce',
-            'easeInOutBounce',
+        opacity: 255,
+        duration: 3, 
+        delay: 0,
+        animationNames: [
+            'fade',
+            'none',
         ],
-        selectedFuncName: null,
-        opacity: 0,
+        animationFuncs: [
+            fade,
+            none,
+        ],
+        selectedAnimation: null,
     };
-    animation_params.selectedFuncName = animation_params.funcNames[0];
-    animation_params.funcs = _(animation_params.funcNames).reduce(
-        (memo, funcName) => {
-            memo[funcName] = function(time){ return $.easing[funcName](null,time,0,1,1)}; 
-            return memo;
-        }, {}
-    )
+    animation_params.selectedAnimation = 0;
 
     controlKit = new ControlKit();
     controlKit
@@ -89,21 +60,18 @@ function setup() {
             .addSlider(rays_params, 'originOffsetY', 'originOffsetY_range')
             .addSlider(rays_params, 'circleOffsetX', 'circleOffsetX_range')
             .addSlider(rays_params, 'circleOffsetY', 'circleOffsetY_range')
-    // controlKit
-    //     .addPanel({
-    //         label: "Animation",
-    //     })
-    //     .addGroup()
-    //         .addSelect(animation_params,'funcNames',{
-    //             target:'selectedFuncName',
-    //             onChange: function (funcIndex) {
-    //                 var funcName = animation_params.funcNames[funcIndex]
-    //                 console.log(funcName);
-    //                 animation_params.selectedFuncName = funcName;
-    //                 controlKit.update(); // this doesnt affect functionPlotters :(
-    //             }
-    //         })
-    //         .addFunctionPlotter(animation_params.funcs, animation_params.selectedFuncName)
+    controlKit
+        .addPanel({
+            label: "Animation",
+        })
+        .addGroup()
+            .addSelect(animation_params,'animationNames',{
+                target:'selectedAnimation',
+                onChange: function (animationIndex) {
+                    animation_params.selectedAnimation = animationIndex
+                    animate();
+                }
+            })
 
     animate();    
 }
@@ -133,10 +101,13 @@ function draw() {
 }
 
 function animate() {
-    fade(animation_params, 5, 0, animate);
+    animation_params.animationFuncs[animation_params.selectedAnimation](
+        animation_params, 
+        animation_params.duration, 
+        animation_params.delay, 
+        animate);
 }
 
-// function fade (obj, duration, delay, onComplete) {
 function fade (obj, duration, delay, onComplete) {
     TweenMax.to(obj, 0.5 * duration, {
         opacity:255,
@@ -147,6 +118,27 @@ function fade (obj, duration, delay, onComplete) {
         opacity:0,
         onComplete: onComplete,
     });
+}
+
+function none (obj) {
+    TweenMax.set(obj, {
+        opacity:255,
+    });
+}
+
+function wave(obj, duration, delay, onComplete) {
+    // test animation 
+    // TODO implement wave
+    TweenMax.to(obj, 0.5 * duration, {
+        opacity: 100,
+        delay:delay,
+    });
+    TweenMax.to(obj, 0.5 * duration, {
+        delay:delay + 0.5 * duration,
+        opacity:0,
+        onComplete: onComplete,
+    });
+    console.log("wave");
 }
 
 function getPosOnCircle(midPosition, radius, rotation, n, index) {
